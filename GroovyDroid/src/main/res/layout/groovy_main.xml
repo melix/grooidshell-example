@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".GroovyActivity">
+
+    <GridLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText2"
+            android:layout_gravity="left|top"
+            android:text="@string/code"
+            android:layout_row="0"
+            android:layout_column="1" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/resultView"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="result"
+            android:layout_row="0"
+            android:layout_column="3" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="212dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/editText"
+            android:layout_gravity="center_horizontal|top"
+            android:editable="true"
+            android:enabled="true"
+            android:text="@string/default_source"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_columnSpan="3" />
+
+        <Button android:id="@+id/execute_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/dummy_button"
+            android:layout_gravity="center"
+            android:onClick="executeCode"
+            android:layout_row="2"
+            android:layout_column="3" />
+
+
+    </GridLayout>
+</RelativeLayout>
