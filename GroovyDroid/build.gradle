@@ -1,31 +1,28 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.0'
+        classpath 'com.android.tools.build:gradle:0.9.0'
     }
 }
 apply plugin: 'android'
 
 repositories {
     mavenLocal()
-    mavenCentral()
+    jcenter()
 }
 
 dependencies {
 	compile 'com.google.android.tools:dx:1.7'
 
-	// You must install or update the Support Repository through the SDK manager to use this dependency.
-	// The Support Repository (separate from the corresponding library) can be found in the Extras category.
-	// compile 'com.android.support:appcompat-v7:18.0.0'
-    compile 'org.codehaus.groovy:groovy:2.3.0-SNAPSHOT'
+    compile 'org.codehaus.groovy:groovy:2.3.0-droid-SNAPSHOT'
     compile files('libs/openbeans-1.0.jar')
 }
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "18.1"
+    buildToolsVersion "19.0.3"
 
     defaultConfig {
         minSdkVersion 17
@@ -33,4 +30,19 @@ android {
     }
 }
 
-task compileGroovy(type:GroovyCompile)
+android.applicationVariants.all {
+    task "groovy${name}Compile"(type:GroovyCompile) {
+        source = javaCompile.source + fileTree('src/main/java').include('**/*.groovy')
+        destinationDir = javaCompile.destinationDir
+        classpath = javaCompile.classpath
+        groovyClasspath = classpath
+        sourceCompatibility = '1.6'
+        targetCompatibility = '1.6'
+        doFirst {
+            def runtimeJars = plugins.findPlugin(com.android.build.gradle.AppPlugin).runtimeJars
+            classpath = files(runtimeJars) + classpath
+        }
+    }
+    javaCompile.dependsOn("groovy${name}Compile")
+    javaCompile.enabled = false
+}

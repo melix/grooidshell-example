@@ -9,8 +9,7 @@
     <string name="title_activity_groovy">GroovyDroid</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="default_source">\@groovy.transform.CompileStatic\n
-int fib(int n) { n&lt;2?n:fib(n-1)+fib(n-2) }\n
-fib(20)</string>
+    <string name="default_source">\@groovy.transform.CompileStatic int fib(int n) { n&lt;2?n:fib(n-1)+fib(n-2) }\n
+fib(22)</string>
 
 </resources>
