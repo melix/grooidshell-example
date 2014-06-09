@@ -1,47 +1,60 @@
 buildscript {
     repositories {
+        mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.0'
+        classpath 'com.android.tools.build:gradle:0.11.0'
+        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.2-SNAPSHOT'
     }
 }
+
 apply plugin: 'android'
+apply plugin: 'groovy-android'
 
 repositories {
     mavenLocal()
+    maven {
+        url='https://oss.jfrog.org/oss-snapshot-local/'
+    }
     jcenter()
 }
 
+
+
 dependencies {
 	compile 'com.google.android.tools:dx:1.7'
-
-    compile 'org.codehaus.groovy:groovy:2.3.0-droid-SNAPSHOT'
+    compile 'org.codehaus.groovy:groovy:2.4.0-SNAPSHOT:grooid'
 }
 
 android {
     compileSdkVersion 17
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 17
     }
-}
 
-android.applicationVariants.all {
-    task "groovy${name}Compile"(type:GroovyCompile) {
-        source = javaCompile.source + fileTree('src/main/java').include('**/*.groovy')
-        destinationDir = javaCompile.destinationDir
-        classpath = javaCompile.classpath
-        groovyClasspath = classpath
-        sourceCompatibility = '1.6'
-        targetCompatibility = '1.6'
-        doFirst {
-            def runtimeJars = plugins.findPlugin(com.android.build.gradle.AppPlugin).runtimeJars
-            classpath = files(runtimeJars) + classpath
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("KEYSTORE")?:debug.storeFile)
+            storePassword System.getenv("KEYSTORE_PASSWORD")?:'foo'
+            keyAlias System.getenv("KEY_ALIAS")?:'foo'
+            keyPassword System.getenv("KEY_PASSWORD")?:'foo'
         }
     }
-    javaCompile.dependsOn("groovy${name}Compile")
-    javaCompile.enabled = false
+
+    buildTypes {
+        debug {
+            runProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+
 }
