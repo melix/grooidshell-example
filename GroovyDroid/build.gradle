@@ -1,16 +1,15 @@
 buildscript {
     repositories {
-        mavenLocal()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.0'
-        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.2'
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.3.0'
     }
 }
 
 apply plugin: 'android'
-apply plugin: 'groovy-android'
+apply plugin: 'me.champeau.gradle.groovy-android'
 
 repositories {
     mavenLocal()
@@ -25,6 +24,7 @@ repositories {
 dependencies {
 	compile 'com.google.android.tools:dx:1.7'
     compile 'org.codehaus.groovy:groovy:2.4.0-SNAPSHOT:grooid'
+    compile project(':groovylib')
 }
 
 android {

@@ -2,10 +2,12 @@ package me.champeau.groovydroid
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.EditText
 import groovy.transform.CompileStatic
+import me.champeau.testlibrary.groovylib.GroovyUtils
 
 @CompileStatic
 class GroovyActivity extends Activity {
@@ -14,6 +16,7 @@ class GroovyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.groovy_main)
+        Log.d("GroovyActivity", GroovyUtils.hello())
     }
 
     @Override
