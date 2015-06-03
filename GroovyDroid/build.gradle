@@ -3,8 +3,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.3.0'
+        classpath 'com.android.tools.build:gradle:1.1.0'
+        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.3.4'
     }
 }
 
@@ -47,11 +47,11 @@ android {
 
     buildTypes {
         debug {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
