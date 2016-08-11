@@ -11,6 +11,7 @@ import com.android.dx.dex.code.PositionList;
 import com.android.dx.dex.file.ClassDefItem;
 import com.android.dx.dex.file.DexFile;
 
+import java.util.Collections;
 import org.codehaus.groovy.control.BytecodeProcessor;
 import org.codehaus.groovy.control.CompilerConfiguration;
 
@@ -61,18 +62,17 @@ public class GrooidShell {
         cfOptions.optimize = false;
         cfOptions.optimizeListFile = null;
         cfOptions.dontOptimizeListFile = null;
-        cfOptions.statistics = false;
+        cfOptions.statistics = true;
     }
 
 
     public EvalResult evaluate(String scriptText) {
         long sd = System.nanoTime();
-        final Set<String> classNames = new LinkedHashSet<String>();
+        final Set<String> classNames = new LinkedHashSet<>();
         final DexFile dexFile = new DexFile(dexOptions);
         CompilerConfiguration config = new CompilerConfiguration();
         config.setBytecodePostprocessor(new BytecodeProcessor() {
-            @Override
-            public byte[] processBytecode(String s, byte[] bytes) {
+            @Override public byte[] processBytecode(String s, byte[] bytes) {
                 ClassDefItem classDefItem = CfTranslator.translate(s+".class", bytes, cfOptions, dexOptions);
                 dexFile.add(classDefItem);
                 classNames.add(s);
@@ -103,10 +103,8 @@ public class GrooidShell {
                 Script script = null;
                 try {
                     script = (Script) scriptClass.newInstance();
-                } catch (InstantiationException e) {
+                } catch (InstantiationException | IllegalAccessException e) {
                     Log.e("GroovyDroidShell", "Unable to create script",e);
-                } catch (IllegalAccessException e) {
-                    Log.e("GroovyDroidShell", "Unable to create script", e);
                 }
                 result = script.run();
                 execTime = System.nanoTime()-sd;
@@ -143,7 +141,7 @@ public class GrooidShell {
         } finally {
             tmpDex.delete();
         }
-        return null;
+        return Collections.emptyMap();
     }
 
     private static Manifest makeManifest() throws IOException {
@@ -155,7 +153,7 @@ public class GrooidShell {
         return manifest;
     }
 
-    public static class EvalResult {
+    private static class EvalResult {
         final long compilationTime;
         final long execTime;
         final Object result;

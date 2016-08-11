@@ -13,29 +13,29 @@ import me.champeau.testlibrary.groovylib.GroovyUtils
 class GroovyActivity extends Activity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.groovy_main)
         Log.d("GroovyActivity", GroovyUtils.hello())
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.groovy, menu)
-        true
+        return true
     }
 
-    public void executeCode(View view) {
+    void executeCode(View view) {
         def resultView = (EditText) findViewById(R.id.resultView)
         resultView.setText(generateMessage())
     }
 
-    String generateMessage() {
+    private String generateMessage() {
         GrooidShell shell = new GrooidShell(applicationContext.getDir("dynclasses", 0), this.classLoader)
 
         def code = (EditText) findViewById(R.id.editText)
-        shell.evaluate(code.text.toString())
+        return shell.evaluate(code.text.toString())
     }
 
 }
