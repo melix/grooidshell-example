@@ -3,37 +3,31 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
-        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.3.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.0.0'
     }
 }
 
-apply plugin: 'android'
-apply plugin: 'me.champeau.gradle.groovy-android'
+apply plugin: 'com.android.application'
+apply plugin: 'groovyx.android'
 
 repositories {
-    mavenLocal()
-    maven {
-        url='https://oss.jfrog.org/oss-snapshot-local/'
-    }
     jcenter()
 }
 
-
-
 dependencies {
-	compile 'com.google.android.tools:dx:1.7'
-    compile 'org.codehaus.groovy:groovy:2.4.0-SNAPSHOT:grooid'
+    compile 'com.google.android.tools:dx:1.7'
+    compile 'org.codehaus.groovy:groovy:2.4.7:grooid'
     compile project(':groovylib')
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 24
+    buildToolsVersion '23.0.3'
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 17
+        targetSdkVersion 24
     }
 
     signingConfigs {
@@ -47,14 +41,18 @@ android {
 
     buildTypes {
         debug {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
 }
